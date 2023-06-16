@@ -8,12 +8,15 @@ from collections import Counter
 
 #Example documents
 docs = [
-    '''About us. We deliver Artificial Intelligence & Machine Learning
-       solutions to solve business challenges.''',
-    '''Contact information. Email [martin davtyan at filament dot ai]
-       if you have any questions''',
-    '''Filament Chat. A framework for building and maintaining a scalable
-       chatbot capability''',
+    '''Noona Noodles is a mother-daughter team that turns out surprising 
+    varieties of ramen, jjam bbong packed with spicy seafood, 
+    saucy dumplings, and naengmyeon, served ice-cold.''',
+    '''Young people’s mental health is finally getting the attention 
+    it needs as latest research highlight the urgent need for better 
+    prevention and treatment of youth anxiety and depression''',
+    '''The New Chatbots Could Change the World. Can You Trust Them? 
+    Siri, Google Search, online marketing and your child’s homework 
+    will never be the same.''',
 ]
 
 #A mapping table that allows use to remove all punctuation
@@ -48,7 +51,7 @@ vectorizer.fit(docs)
 print("Document Vector: ", vectorizer.vocabulary_,"\n")
 
 #Transform the example query provided into a vector
-query = 'contact email to chat to martin'
+query = 'A final highlight on Google.'
 query_vector = np.asarray(vectorizer.transform([query]).todense())  
 query_vector = np.reshape(query_vector, (1, -1)) 
 doc_vectors = vectorizer.transform(docs).toarray()
@@ -63,7 +66,7 @@ print("Most Relevant Doc: ", most_relevant_doc, "\n")
 #Now we try to improve ranking with feedback
 feedback = {
         'who makes chatbots': [(2, 0.), (0, 1.), (1, 1.), (0, 1.)],
-        'about page': [(0, 1.)]
+        'Noona Company': [(0, 1.)]
 }  
 
 #Current search system response
@@ -170,5 +173,5 @@ scorer.learn_feedback(feedback)
 print("With Feedback Test: ", docs[scorer.score(query).argmax()], "\n")
 
 #Test with weights and feedback
-scorer.feature_weights = [0.6, 0.4]
+scorer.feature_weights = [0.8, 0.2]
 print("With Feedback and Weight Test: ", docs[scorer.score(query).argmax()], "\n")
